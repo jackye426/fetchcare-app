@@ -18,6 +18,9 @@ firebaseConfig = {
     "databaseURL": st.secrets.get("firebase_database_url", None)
 }
 
+# 🔍 DEBUG: Print API key to verify it's loading correctly
+st.write("DEBUG - Firebase API Key:", firebaseConfig["apiKey"])
+
 if not firebaseConfig["apiKey"]:  # fallback to .env if not on Streamlit
     load_dotenv()
     firebaseConfig = {
@@ -39,7 +42,6 @@ from google.cloud import firestore
 
 if "service_account_json" in st.secrets:
     db = firestore.Client.from_service_account_info(dict(st.secrets["service_account_json"]))
-
 else:
     db = firestore.Client.from_service_account_json("serviceAccountKey.json")
 
