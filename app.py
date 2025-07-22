@@ -1,9 +1,23 @@
 import streamlit as st
-from openai import OpenAI
 import base64
 import time
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
 from auth import login_ui
 from firestore_utils import save_message, get_chat_history, save_tracker, get_tracker
+
+# ---------- Secure Key Loading ----------
+# Load Streamlit secrets or fallback to local .env
+api_key = st.secrets.get("openai_api_key")
+if api_key is None:
+    load_dotenv()
+    api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize OpenAI client
+client = OpenAI(api_key=api_key)
+
 
 # ---------- Auth ----------
 if "user_id" not in st.session_state:
@@ -110,8 +124,6 @@ uploaded_file = st.file_uploader("📸 Upload a photo of your pet’s symptom (o
 # Chat input
 user_message = st.chat_input(f"Ask Pip about {pet_name}...")
 
-# OpenAI client
-client = OpenAI(api_key="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")
 
 if user_message:
     st.session_state.messages[pet_name].append({"role": "user", "content": user_message})
