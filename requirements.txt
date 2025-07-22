@@ -4,3 +4,6 @@ pyrebase4
 python-dotenv
 firebase-admin
 google-cloud-firestore
+oauth2client
+gcloud
+setuptools
