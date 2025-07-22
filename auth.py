@@ -35,9 +35,11 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 # ---------- Firestore (service account) ----------
+from google.cloud import firestore
+
 if "service_account_json" in st.secrets:
-    service_account_info = json.loads(st.secrets["service_account_json"])
-    db = firestore.Client.from_service_account_info(service_account_info)
+    db = firestore.Client.from_service_account_info(dict(st.secrets["service_account_json"]))
+
 else:
     db = firestore.Client.from_service_account_json("serviceAccountKey.json")
 
